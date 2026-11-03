@@ -2,6 +2,7 @@
   "vol": {
     "vitesse_m_s": 20,
     "couloirs": 3,
+    "changement_couloir_s": 0.15,
     "etourdissement_s": 1
   },
   "audace": {
@@ -12,7 +13,9 @@
   "echo": {
     "portee_m": 60,
     "vitesse_onde_m_s": 120,
-    "revelation_s": 1.5
+    "revelation_s": 1.5,
+    "fondu_s": 0.5,
+    "opacite_fantome_pourcent": 12
   },
   "marquage": {
     "duree_s": 4,

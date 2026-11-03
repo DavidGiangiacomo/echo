@@ -1,8 +1,10 @@
 # balance.json
 
 Source unique des valeurs d'équilibrage de L'Écho (issue #4). Le simulateur
-(`simulateur/`) et, plus tard, le jeu Godot lisent ce même fichier : un réglage
-validé au simulateur arrive tel quel dans le jeu.
+(`simulateur/`) et le jeu Godot (`scripts/balance.gd`) lisent ce même
+fichier : un réglage validé au simulateur arrive tel quel dans le jeu.
+Quelques valeurs ne servent qu'au jeu ; la colonne « Simulateur » les
+signale.
 
 Le format JSON n'accepte pas les commentaires, d'où cette page. Les valeurs
 reprennent le GDD (`docs/gdd.md`), sauf celles que le GDD ne donne pas,
@@ -31,6 +33,7 @@ les deux autres sens (Ailes, Estomac) arriveront avec l'issue #29.
 |---|---|---|
 | `vitesse_m_s` | vitesse de la chauve-souris. **Inventée** puis **calée** à 20 (premier essai : 10). À 10 m/s, l'audace montait si lentement (×1,2 au bout d'une seconde) que spammer l'écho ne coûtait presque rien | oui |
 | `couloirs` | nombre de couloirs de vol (GDD : 3). Un obstacle bouche un couloir, un insecte vole dans un couloir | oui |
+| `changement_couloir_s` | durée d'un changement de couloir. **Inventée** : 0,15 s. Le sens Ailes (issue #29) la raccourcira | non, jeu seulement |
 | `etourdissement_s` | durée de l'étourdissement après une collision (GDD : 1 s). Pendant ce temps, la chauve-souris ne peut ni attraper, ni esquiver, ni lancer d'écho | oui |
 
 ## audace
@@ -51,6 +54,8 @@ dernier écho : ×1,7 à 50 m, ×2,1 à 100 m, ×3,2 à 400 m.
 | `portee_m` | rayon de l'onde. **Inventée** : 60 m, soit 3 s de vol. C'est elle qui fixe le rythme d'écho optimal en début de partie (2,5 s) | oui |
 | `vitesse_onde_m_s` | vitesse à laquelle l'onde s'étend (issue #9). **Inventée** : 120 m/s, l'onde atteint le bout de sa portée en une demi-seconde | oui |
 | `revelation_s` | un objet touché par l'onde reste visible pendant cette durée, puis n'est plus qu'un fantôme pâle (GDD : 1,5 s) | oui |
+| `fondu_s` | après la révélation, l'objet s'efface jusqu'à son fantôme en ce temps. **Inventée** : 0,5 s | non, jeu seulement |
+| `opacite_fantome_pourcent` | opacité du fantôme « très pâle » (GDD) qui reste ensuite, en points : 12 veut dire 12 %. **Inventée**. Une note de la Partition doit le rendre plus visible (GDD) | non, jeu seulement |
 
 ## marquage
 
@@ -88,6 +93,13 @@ avec les issues #26 et #30.
 | `obstacles` | distance entre deux obstacles, tirée au hasard entre `espacement_min_m` et `espacement_max_m`. **Inventée** : 20 à 46 m, soit un obstacle toutes les 1,7 s, et un dans le couloir de la chauve-souris toutes les 5 s en moyenne | oui |
 | `insectes` | distance entre deux insectes isolés, tirée de la même façon. **Inventée** : 20 à 60 m, un insecte toutes les 2 s | oui |
 | `essaims` | groupes de `taille_min` à `taille_max` insectes, répartis sur `longueur_m`, espacés de `espacement_min_m` à `espacement_max_m`. **Inventés** et **calés** : 5 à 8 insectes sur 24 m, un essaim toutes les 2 min à 2 min 40 s. Le premier donne le premier Chœur (cible : 2 à 3 min) | oui |
+
+Dans le jeu, les insectes et les essaims sont posés aux mêmes espacements que
+dans le simulateur. Les obstacles, eux, viennent des segments préfabriqués de
+`scenes/segments/` (issue #7) : le jeu ne lit pas `obstacles`. Un test
+(`tests/test_grotte.gd`) vérifie que l'espacement moyen des obstacles, compte
+tenu du poids de chaque segment, reste dans cette fourchette (31 m
+aujourd'hui). Ajouter ou modifier un segment peut donc faire échouer ce test.
 
 ## especes
 

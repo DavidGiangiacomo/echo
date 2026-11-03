@@ -1,11 +1,11 @@
-# Lance les tests du simulateur d'économie sur GitHub Actions :
-# à chaque pull request, à chaque push sur main, et à la demande depuis
-# l'onglet Actions (bouton « Run workflow »). Lance ensuite les trois scripts
-# du simulateur en version courte, pour vérifier qu'ils tournent sans erreur.
+# Lance les tests sur GitHub Actions : à chaque pull request, à chaque push
+# sur main, et à la demande depuis l'onglet Actions (bouton « Run workflow »).
 #
-# Tout tourne avec deux versions de Python : la plus ancienne que le README
-# annonce (3.8) et la plus récente (« 3.x »). Rien à installer : le
-# simulateur n'utilise aucune bibliothèque.
+# - simulateur : les tests du simulateur d'économie, puis ses trois scripts
+#   en version courte, avec deux versions de Python : la plus ancienne que le
+#   README annonce (3.8) et la plus récente (« 3.x »). Rien à installer.
+# - jeu : les tests GUT du jeu Godot, puis 30 s de vol avec le pilote
+#   automatique ; la moindre erreur de script fait échouer le job.
 
 name: Tests
 
@@ -66,3 +66,52 @@ jobs:
         run: |
           python simulateur/verifier_rythme.py --graines 1
           python simulateur/verifier_rythme.py --graines 1 --politique givre
+
+  jeu:
+    name: Jeu (Godot 4.7.2)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      VERSION_GODOT: 4.7.2-stable
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v7
+
+      # Godot n'est téléchargé qu'une fois, puis gardé en cache.
+      - name: Retrouver Godot dans le cache
+        id: cache-godot
+        uses: actions/cache@v6
+        with:
+          path: ~/godot
+          key: godot-${{ env.VERSION_GODOT }}
+
+      # Le binaire officiel, vérifié avec l'empreinte publiée par Godot.
+      - name: Télécharger Godot
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot && cd ~/godot
+          adresse=https://github.com/godotengine/godot/releases/download/$VERSION_GODOT
+          archive=Godot_v${VERSION_GODOT}_linux.x86_64.zip
+          curl -sSfLO "$adresse/$archive"
+          curl -sSfLO "$adresse/SHA512-SUMS.txt"
+          grep " $archive\$" SHA512-SUMS.txt | sha512sum -c -
+          unzip -q "$archive"
+          mv "Godot_v${VERSION_GODOT}_linux.x86_64" godot
+          rm "$archive" SHA512-SUMS.txt
+
+      # L'import prépare le projet (dossier .godot/). Godot ne s'arrête pas
+      # sur une erreur de script : on la cherche dans ce qu'il affiche.
+      - name: Importer le projet
+        run: |
+          ~/godot/godot --headless --path . --import 2>&1 | tee import.log
+          ! grep -E "SCRIPT ERROR|Parse Error" import.log
+
+      - name: Lancer les tests GUT
+        run: ~/godot/godot --headless --path . -s addons/gut/gut_cmdln.gd
+
+      # 1 800 images à 60 images par seconde : 30 s de jeu, calculées aussi
+      # vite que possible.
+      - name: Faire voler le pilote automatique
+        run: |
+          ~/godot/godot --headless --path . --fixed-fps 60 --quit-after 1800 -- --demo 2>&1 | tee vol.log
+          ! grep -E "SCRIPT ERROR|ERROR:" vol.log

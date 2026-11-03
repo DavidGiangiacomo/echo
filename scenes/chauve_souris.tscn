@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/chauve_souris.gd" id="1"]
+
+[sub_resource type="CircleShape2D" id="forme"]
+radius = 30.0
+
+[node name="ChauveSouris" type="Area2D"]
+collision_mask = 6
+monitorable = false
+script = ExtResource("1")
+
+[node name="Forme" type="CollisionShape2D" parent="."]
+shape = SubResource("forme")

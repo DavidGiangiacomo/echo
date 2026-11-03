@@ -31,7 +31,7 @@ messages de commit, pull requests, commentaires d'issues.
 ## Valeurs d'équilibrage
 
 - `data/balance.json` est la source unique des valeurs, lue par le simulateur
-  et, plus tard, par le jeu. Chaque champ est décrit dans `data/README.md`,
+  et par le jeu. Chaque champ est décrit dans `data/README.md`,
   qui signale les valeurs inventées (absentes du GDD) et calées (modifiées
   par le calage).
 - Après un changement de valeurs, lancer `simulateur/rythme_echo.py` et
@@ -49,3 +49,16 @@ messages de commit, pull requests, commentaires d'issues.
   plus récente, puis lance les trois scripts du simulateur en version courte.
 - Le code est commenté pas à pas, comme dans le Somnambule : les commentaires
   expliquent aussi la syntaxe à qui la découvre.
+
+## Jeu Godot
+
+- Godot 4.7 (4.7.2 dans la CI), GDScript typé, rendu Mobile. Les formules
+  du vol (`scripts/formules.gd`) sont traduites de `simulateur/formules.py` :
+  toute formule changée l'est des deux côtés, avec ses tests.
+- Tests GUT en ligne de commande : `godot --headless --path . --import`, puis
+  `godot --headless --path . -s addons/gut/gut_cmdln.gd`. Godot ne s'arrête
+  pas sur une erreur de script : la chercher dans ce qu'il affiche.
+- `godot --path . -- --demo` fait jouer le pilote automatique.
+- Versionner les fichiers `.uid` que Godot crée à côté des scripts.
+- `trait` est un mot réservé de GDScript dans Godot 4.7 : ne pas l'utiliser
+  comme nom de variable.
