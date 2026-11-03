@@ -133,6 +133,11 @@ critères d'acceptation des issues #1 (une saison de 30 min en moins d'une
 seconde) et #4 (changer une valeur de `balance.json` change le résultat sans
 toucher au code). Ils durent moins d'une seconde.
 
+Ils tournent aussi sur GitHub Actions (`.github/workflows/tests.yml`) à
+chaque pull request et à chaque push sur `main`, avec Python 3.8, la plus
+ancienne version annoncée, et la plus récente. Une pull request dont les
+tests échouent affiche une croix rouge.
+
 ## Organisation du code
 
 - `formules.py` : les formules du GDD, une fonction par formule, sans rien

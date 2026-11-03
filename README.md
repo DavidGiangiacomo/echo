@@ -18,6 +18,7 @@ décisions prises sont dans `docs/calage.md`.
 | `data/` | `balance.json`, valeurs d'équilibrage lues par le simulateur et, plus tard, par le jeu ; `README.md` décrit chaque champ |
 | `simulateur/` | simulateur d'économie en Python (ignoré par Godot) |
 | `docs/` | game design document et journal du calage (ignorés par Godot) |
+| `.github/workflows/` | intégration continue : les tests tournent sur GitHub à chaque pull request |
 
 Le projet Godot (scènes, scripts, ressources) arrivera avec l'étape 2, le
 prototype gris (issue #5).
@@ -42,3 +43,7 @@ Tests :
 ```sh
 python3 -m unittest discover -s simulateur -v
 ```
+
+Les mêmes tests tournent sur GitHub Actions à chaque pull request et à chaque
+push sur `main`, avec Python 3.8 et la version la plus récente
+(`.github/workflows/tests.yml`).
