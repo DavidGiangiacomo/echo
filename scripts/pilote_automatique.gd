@@ -37,7 +37,7 @@ func _exit_tree() -> void:
 		vol.echos,
 		vol.collisions,
 		vol.choeurs,
-		Texte.nombre(vol.insectes, 0),
+		Nombres.court(vol.insectes),
 	])
 
 

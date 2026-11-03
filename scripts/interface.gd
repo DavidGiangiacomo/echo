@@ -1,6 +1,6 @@
 extends CanvasLayer
-## L'affichage par-dessus le vol : les insectes gagnés, l'audace en petit
-## (issue #10) et l'annonce des Chœurs (issue #11).
+## L'affichage par-dessus le vol : les insectes de la partie, l'audace en
+## petit (issue #10) et l'annonce des Chœurs (issue #11).
 ##
 ## Un CanvasLayer se dessine par-dessus la scène et ne suit pas la caméra.
 
@@ -14,16 +14,19 @@ extends CanvasLayer
 
 
 func _ready() -> void:
-	vol.insectes_changes.connect(_sur_insectes)
+	# Les insectes sont ceux de la partie, sauvegardés d'une session à
+	# l'autre : on les lit dans GameState, pas dans le vol.
+	GameState.insectes_changes.connect(_sur_insectes)
 	vol.audace_changee.connect(_sur_audace)
 	vol.choeur.connect(_sur_choeur)
-	_sur_insectes(0.0)
+	_sur_insectes(GameState.insectes)
 	_sur_audace(1.0)
 	_choeur.modulate.a = 0.0
 
 
+## Le total s'écrit en format court : « 1,2 k », « 3,4 M »…
 func _sur_insectes(total: float) -> void:
-	_insectes.text = "Insectes  " + Texte.nombre(total, 0)
+	_insectes.text = "Insectes  " + Nombres.court(total)
 
 
 func _sur_audace(valeur: float) -> void:

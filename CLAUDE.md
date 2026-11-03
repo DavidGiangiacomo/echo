@@ -60,5 +60,9 @@ messages de commit, pull requests, commentaires d'issues.
   pas sur une erreur de script : la chercher dans ce qu'il affiche.
 - `godot --path . -- --demo` fait jouer le pilote automatique.
 - Versionner les fichiers `.uid` que Godot crée à côté des scripts.
+- Les autoloads `GameState` et `Sauvegarde` viennent du Somnambule. Un test
+  ne touche jamais la vraie partie : il crée un `GameState` neuf
+  (`preload("res://scripts/game_state.gd").new()`) et le donne au nœud
+  testé par sa variable `etat`.
 - `trait` est un mot réservé de GDScript dans Godot 4.7 : ne pas l'utiliser
   comme nom de variable.
