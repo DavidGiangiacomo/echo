@@ -31,7 +31,7 @@ messages de commit, pull requests, commentaires d'issues.
 ## Valeurs d'équilibrage
 
 - `data/balance.json` est la source unique des valeurs, lue par le simulateur
-  et, plus tard, par le jeu. Chaque champ est décrit dans `data/README.md`,
+  et par le jeu. Chaque champ est décrit dans `data/README.md`,
   qui signale les valeurs inventées (absentes du GDD) et calées (modifiées
   par le calage).
 - Après un changement de valeurs, lancer `simulateur/rythme_echo.py` et
