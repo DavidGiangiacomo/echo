@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/segment.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/parois.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/obstacle.tscn" id="3"]
+
+[node name="Stalagmites" type="Node2D"]
+script = ExtResource("1")
+poids = 1.0
+
+[node name="Parois" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="Stalagmite1" parent="." instance=ExtResource("3")]
+position = Vector2(390, 0)
+forme = 1
+
+[node name="Stalagmite2" parent="." instance=ExtResource("3")]
+position = Vector2(930, 0)
+forme = 1
