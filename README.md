@@ -30,11 +30,11 @@ Voir le game design document (`docs/gdd.md`).
 
 ## Lancer le jeu
 
-Ouvrir `project.godot` avec Godot 4.7, puis F5. La fenêtre de bureau s'ouvre
-en paysage (1280 × 720) ; on peut la redimensionner en portrait. Le jeu est
-dessiné sur un écran de référence de 1080 × 1080 qui s'élargit selon
-l'orientation : la grotte garde la même taille, mais on voit plus loin devant
-en paysage.
+Ouvrir `project.godot` avec Godot 4.7, puis F5. Le jeu se joue en paysage
+(issue #6) : la fenêtre de bureau s'ouvre en 1280 × 720. Il est dessiné sur un
+écran de référence de 1080 × 1080 qui s'élargit selon la forme de l'écran : la
+grotte garde la même taille, et plus l'écran est allongé, plus on voit loin
+devant.
 
 Contrôles (sur ordinateur, la souris joue le rôle du doigt) :
 
@@ -44,8 +44,10 @@ Contrôles (sur ordinateur, la souris joue le rôle du doigt) :
 | glisser vers le haut ou le bas | changer de couloir (plafond, milieu, sol) |
 | bouton en haut à droite | basculer entre **Couloirs** et **Vol libre** (le doigt guide la chauve-souris) |
 
-Sur téléphone, l'écran tourne librement : on compare portrait et paysage en
-tournant l'appareil. Ces deux comparaisons servent à trancher l'issue #6.
+Sur téléphone, l'écran reste en paysage, dans un sens ou dans l'autre selon
+la façon dont on tient l'appareil : en portrait, on ne voit pas assez loin
+devant (issue #6). Le bouton sert à comparer les deux façons de piloter,
+l'autre question de l'issue #6.
 
 Pour regarder le prototype jouer tout seul, avec un écho toutes les 2,5 s :
 
