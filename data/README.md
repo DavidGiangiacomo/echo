@@ -65,7 +65,7 @@ dernier écho : ×1,7 à 50 m, ×2,1 à 100 m, ×3,2 à 400 m.
 
 | Champ | Sens | Simulateur |
 |---|---|---|
-| `secondes_de_colonie` | **Ajout du calage, absent du GDD.** Chaque insecte attrapé en vol vaut en plus ce nombre de secondes de production de la colonie : b = b_grotte + k · P. À `0`, on retrouve exactement la formule du GDD. **Calé** à 1,5 | oui |
+| `secondes_de_colonie` | **Ajout du calage, absent du GDD.** Chaque insecte attrapé en vol vaut en plus ce nombre de secondes de production de la colonie : b = b_grotte + k · P. À `0`, on retrouve exactement la formule du GDD. **Calé** à 1,5, ajout validé le 3 novembre 2026 | oui |
 
 Pourquoi cet ajout : avec la formule du GDD, b reste fixe alors que la colonie
 grandit sans cesse. Au bout de quelques minutes, le vol ne pèse plus que 2 %
@@ -128,7 +128,7 @@ Les effets viennent du GDD ; les prix (50 × 1,6^n, Instinct 30 × 1,5^n) sont
 | Champ | Sens | Simulateur |
 |---|---|---|
 | `diviseur_insectes`, `exposant` | H = ⌊(I / `diviseur_insectes`)^`exposant`⌋, où I est le total d'insectes gagnés pendant la saison (GDD : 10^5 et 0,45) | oui |
-| `bonus_production_pourcent` | bonus de production globale par harmonique gardée (non dépensée). **Calé** à 14 (GDD : 2) pour que les saisons suivantes raccourcissent | oui |
+| `bonus_production_pourcent` | bonus de production globale par harmonique gardée (non dépensée). **Calé** à 14 (GDD : 2) pour que les saisons suivantes raccourcissent ; choix validé le 3 novembre 2026 | oui |
 | `bonus_premiere_harmonique_pourcent` | exploration pour la Partition (issue #19) : bonus ajouté une seule fois dès la première harmonique, comme le ferait une première note très forte. `0` : sans effet | oui |
 
 Avec `bonus_production_pourcent` à 2 (GDD) et

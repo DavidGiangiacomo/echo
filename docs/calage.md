@@ -25,8 +25,9 @@ Pour en arriver là, le calage a dû **ajouter une règle au GDD** :
 la valeur des insectes attrapés suit la colonie (`secondes_de_colonie`). Sans
 elle, le vol ne compte presque pas pour la progression (point 1). Il a aussi
 **changé deux valeurs du GDD** : les productions des espèces, divisées par
-quatre environ, et le bonus par harmonique, passé de 2 à 14 %. Chaque
-changement peut être annulé dans `balance.json`.
+quatre environ, et le bonus par harmonique, passé de 2 à 14 %. Ces choix ont
+été validés le 3 novembre 2026 (voir « Décisions »). Chaque changement peut
+être annulé dans `balance.json`.
 
 Les saisons 2 à 4 restent trop longues : avec un bonus qui grandit d'autant à
 chaque harmonique, aucune valeur ne peut tenir toutes les cibles (point 6).
@@ -54,7 +55,7 @@ colonie fait tout. Écho, audace et marquage ne changent alors presque plus la
 progression : l'idle pur atteint la première Hibernation à peine plus tard
 que le joueur attentif. Le pilier « Voir est un choix » ne pèse plus rien.
 
-**Ajout proposé** (`insectes.secondes_de_colonie`) : chaque insecte attrapé
+**Ajout retenu** (`insectes.secondes_de_colonie`, validé) : chaque insecte attrapé
 vaut en plus k secondes de production de la colonie,
 b = b_grotte + k · P. C'est le principe d'Idle Slayer ou des cookies dorés de
 Cookie Clicker : les récompenses actives se comptent en secondes de
@@ -173,7 +174,8 @@ donc T1 / (1 + x · (k − 1)), où T1 est la durée de la première.
 Tenir T1 entre 20 et 25 min et les saisons 2 à 10 entre 10 et 15 min
 demanderait à la fois 1 + x ≥ 20 / 15, soit x ≥ 0,33, et 1 + 9x ≤ 25 / 10,
 soit x ≤ 0,17. C'est impossible : les deux bouts du tableau « Rythme visé » se
-contredisent. Le meilleur compromis est x ≈ 14 % (6 saisons sur 9).
+contredisent. Le meilleur compromis est x ≈ 14 % (6 saisons sur 9) : c'est
+la valeur retenue.
 
 | Saison | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | dans la cible |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -244,13 +246,23 @@ Deux défauts du modèle de joueur faussaient les premières mesures :
   lointains arrivaient démarqués. L'écart entre deux échos ne dépasse plus ce
   que la chauve-souris parcourt pendant le marquage.
 
-## Décisions qui te reviennent
+## Décisions
 
-1. **Valider `secondes_de_colonie`**, ou une autre façon de faire compter le
-   vol pour la progression. Sans elle, l'écho ne change presque rien.
-2. **Saisons suivantes** : garder +14 % par harmonique (6 saisons sur 9), ou
-   confier l'accélération à la première note de la Partition (+60 %, 9 sur 9)
-   en concevant l'issue #19.
+Prises le 3 novembre 2026 :
+
+1. **`secondes_de_colonie` est validé** (k = 1,5) : la valeur des insectes
+   attrapés suit la colonie, et le vol compte pendant toute la saison.
+2. **Le bonus de +14 % par harmonique est retenu**, avec ses 6 saisons sur 9
+   dans la cible. Le levier `bonus_premiere_harmonique_pourcent` reste
+   disponible pour concevoir la Partition (issue #19) : une première note à
+   +60 %, avec un bonus ramené à 2 % par harmonique, ferait tenir les
+   9 saisons.
+
+Le GDD (`docs/gdd.md`) garde ses valeurs d'origine, comme celui du
+Somnambule : `data/README.md` signale chaque écart.
+
+Restent ouvertes, pour les issues concernées :
+
 3. **Audace** : division littérale (×1,4 en moyenne au rythme optimal) ou
    division du bonus seul (×1,8, calage à refaire).
 4. **Sens et Chœur** : revoir les Oreilles (#15) et lier le seuil du Chœur à

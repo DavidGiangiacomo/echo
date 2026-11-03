@@ -9,7 +9,7 @@ Voir le game design document (`docs/gdd.md`).
 Étape 1 de la feuille de route du GDD (jalon M0) : le **simulateur
 d'économie**, qui valide l'audace, le marquage et le rythme d'écho avant
 d'écrire le jeu (issues #1 à #4). Ce qu'il a appris, les valeurs calées et les
-décisions à prendre sont dans `docs/calage.md`.
+décisions prises sont dans `docs/calage.md`.
 
 ## Arborescence
 
