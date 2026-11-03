@@ -7,7 +7,6 @@ extends Node2D
 ## caméra la suit. Chaque objet garde sa place dans la grotte, ce qui rend
 ## l'onde simple à calculer : un cercle fixe, centré là où elle est partie.
 
-signal insectes_changes(total: float)
 signal audace_changee(valeur: float)
 signal choeur
 
@@ -19,12 +18,17 @@ const MARGE_PX := 200.0
 ## Même graine, même grotte.
 @export var graine := 1
 
+## L'état de la partie, qui reçoit les insectes attrapés. Les tests en
+## fournissent un autre que la vraie partie.
+var etat: Node = GameState
+
 @onready var grotte: Grotte = $Grotte
 @onready var chauve_souris: ChauveSouris = $ChauveSouris
 @onready var ondes: Node2D = $Ondes
 @onready var camera: Camera2D = $Camera
 
 var audace := Audace.new()
+## Insectes gagnés pendant ce vol. Ils vont aussi à la partie (`etat`).
 var insectes := 0.0
 var echos := 0
 var collisions := 0
@@ -112,9 +116,9 @@ func _sur_capture(insecte: Insecte) -> void:
 	var b := Formules.valeur_de_base(Balance.donnees()["grottes"][0], 0.0)
 	var valeur := Formules.valeur_insecte(b, audace.valeur(), m)
 	insectes += valeur
+	etat.gagner_insectes(valeur)
 	_afficher_gain(insecte.position, valeur, m)
 	grotte.retirer_insecte(insecte)
-	insectes_changes.emit(insectes)
 
 
 func _sur_choeur() -> void:

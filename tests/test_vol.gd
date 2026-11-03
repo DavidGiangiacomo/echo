@@ -1,16 +1,22 @@
 extends GutTest
 ## Tests du vol complet (issues #8, #10 et #11) : gestes, écho, collision,
-## capture d'un insecte.
+## capture d'un insecte. Le vol crédite un GameState neuf : la vraie partie
+## n'est jamais touchée.
 
 const SCENE_VOL := preload("res://scenes/vol.tscn")
 const SCENE_INSECTE := preload("res://scenes/insecte.tscn")
 const SCENE_OBSTACLE := preload("res://scenes/obstacle.tscn")
+const SCRIPT_GAME_STATE := preload("res://scripts/game_state.gd")
 
 var _vol: Vol
+var _etat: Node
 
 
 func before_each() -> void:
+	_etat = SCRIPT_GAME_STATE.new()
+	add_child_autofree(_etat)
 	_vol = SCENE_VOL.instantiate()
+	_vol.etat = _etat
 	add_child_autofree(_vol)
 
 
@@ -78,6 +84,15 @@ func test_un_insecte_marque_vaut_b_fois_a_fois_trois() -> void:
 	var attendu := b * Formules.audace(100.0) * 3.0
 	_vol.chauve_souris._sur_contact(insecte)
 	assert_almost_eq(_vol.insectes, attendu, 1e-9)
+
+
+func test_un_insecte_attrape_s_ajoute_aux_insectes_de_la_partie() -> void:
+	var insecte: Insecte = SCENE_INSECTE.instantiate()
+	add_child_autofree(insecte)
+	_vol.chauve_souris._sur_contact(insecte)
+	assert_gt(_vol.insectes, 0.0)
+	assert_eq(_etat.insectes, _vol.insectes)
+	assert_eq(_etat.insectes_de_la_saison, _vol.insectes)
 
 
 func test_la_grotte_avance_avec_la_chauve_souris() -> void:

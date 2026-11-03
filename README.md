@@ -11,7 +11,11 @@ Voir le game design document (`docs/gdd.md`).
   valeurs calées et les décisions prises sont dans `docs/calage.md`.
 - **Étape 2 (jalon M1) : le prototype gris** (issues #5 à #12). Des formes
   blanches sur fond noir, l'onde, la collision : de quoi tester la sensation
-  de « voir par éclairs ». Pas encore de colonie, de son ni de sauvegarde.
+  de « voir par éclairs ». Le playtest a conclu : on continue.
+- **Étape 3 (jalon M2) : le MVP** (issues #13 à #21), en cours. Le socle est
+  posé (issue #13) : l'état de la partie, sa sauvegarde et l'écriture des
+  grands nombres, repris du Somnambule. Pas encore de colonie, de sens, de
+  son ni d'Hibernation.
 
 ## Arborescence
 
@@ -63,8 +67,34 @@ Ce que montre le prototype :
   retombe à ×1 en cas de collision (qui étourdit 1 s) ;
 - un insecte touché par l'onde est marqué (halo doré) et vaut ×3 pendant 4 s ;
   une onde qui marque 5 insectes déclenche un Chœur (×6) ;
+- le compteur d'insectes, en haut à gauche, est celui de la partie : il est
+  sauvegardé (voir plus bas) et s'écrit en format court (1,2 k, 3,4 M, puis
+  1,2e15) ;
 - le compteur d'images par seconde, en bas à gauche, n'apparaît que dans
   l'éditeur et dans l'export de développement.
+
+## L'état de la partie et sa sauvegarde
+
+Comme dans le Somnambule, deux scripts sont chargés au démarrage, avant toute
+scène (Projet → Paramètres du projet → Chargement automatique) :
+
+- **`GameState`** (`scripts/game_state.gd`) tient ce qui survit à un vol :
+  pour l'instant les insectes en poche et le total gagné pendant la saison.
+  Les scènes l'appellent pour dire ce qui s'est passé (`gagner_insectes`) et
+  l'affichage écoute ses signaux (`insectes_changes`).
+- **`Sauvegarde`** (`scripts/sauvegarde.gd`) écrit la partie en JSON dans
+  `user://sauvegarde.json` toutes les 30 s, quand l'application passe en
+  arrière-plan et quand on ferme la fenêtre. Si le téléphone tue le jeu, on
+  perd donc au plus 30 s. Le fichier porte un numéro de version
+  (`save_version`) et l'heure de la sauvegarde, dont se serviront les gains
+  hors-ligne (issue #20).
+
+Pour repartir de zéro, supprimer le fichier : sur Windows, il se trouve dans
+`%APPDATA%\Godot\app_userdata\L'Écho\` ; sur Android, effacer les données de
+l'application. La démonstration (`--demo`) joue sur la vraie partie : ses
+insectes sont sauvegardés comme ceux du joueur. Les tests, eux, travaillent
+sur un `GameState` neuf et un fichier à part, et ne touchent jamais la vraie
+sauvegarde.
 
 ## Tests du jeu
 
