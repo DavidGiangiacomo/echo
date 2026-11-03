@@ -138,6 +138,11 @@ chaque pull request et à chaque push sur `main`, avec Python 3.8, la plus
 ancienne version annoncée, et la plus récente. Une pull request dont les
 tests échouent affiche une croix rouge.
 
+Le même workflow lance aussi les trois scripts en version courte (une graine,
+des vols d'une minute). Il vérifie qu'ils tournent sans erreur, pas que les
+cibles du GDD sont tenues : un script qui affiche « NON respecté » réussit
+quand même.
+
 ## Organisation du code
 
 - `formules.py` : les formules du GDD, une fonction par formule, sans rien

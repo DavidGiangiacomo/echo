@@ -1,10 +1,11 @@
 # Lance les tests du simulateur d'économie sur GitHub Actions :
 # à chaque pull request, à chaque push sur main, et à la demande depuis
-# l'onglet Actions (bouton « Run workflow »).
+# l'onglet Actions (bouton « Run workflow »). Lance ensuite les trois scripts
+# du simulateur en version courte, pour vérifier qu'ils tournent sans erreur.
 #
-# Les tests tournent avec deux versions de Python : la plus ancienne que le
-# README annonce (3.8) et la plus récente (« 3.x »). Ils n'ont besoin
-# d'aucune bibliothèque : rien à installer.
+# Tout tourne avec deux versions de Python : la plus ancienne que le README
+# annonce (3.8) et la plus récente (« 3.x »). Rien à installer : le
+# simulateur n'utilise aucune bibliothèque.
 
 name: Tests
 
@@ -42,3 +43,26 @@ jobs:
 
       - name: Lancer les tests
         run: python -m unittest discover -s simulateur -v
+
+      # Les étapes suivantes lancent les scripts en version courte (une
+      # graine, des vols d'une minute). Elles vérifient seulement que les
+      # scripts tournent sans erreur : elles ne jugent pas les cibles du GDD,
+      # et un script qui affiche « NON respecté » réussit quand même.
+
+      # Les trois profils : le résumé de l'idle pur (sans écho ni Chœur)
+      # n'emprunte pas le même chemin que celui des autres.
+      - name: Simuler une saison par profil
+        run: |
+          for profil in attentif moyen idle; do
+            python simulateur/simulateur.py --profil "$profil" --duree 5
+          done
+
+      - name: Étudier le rythme d'écho (issue 2)
+        run: python simulateur/rythme_echo.py --graines 1 --duree 1 --sens
+
+      # La politique « givre » allonge les saisons au-delà de la durée
+      # maximale : on vérifie aussi l'affichage d'une série interrompue.
+      - name: Vérifier le rythme visé (issue 3)
+        run: |
+          python simulateur/verifier_rythme.py --graines 1
+          python simulateur/verifier_rythme.py --graines 1 --politique givre
