@@ -80,18 +80,6 @@ func test_un_insecte_marque_vaut_b_fois_a_fois_trois() -> void:
 	assert_almost_eq(_vol.insectes, attendu, 1e-9)
 
 
-func test_en_vol_libre_le_doigt_guide_la_chauve_souris() -> void:
-	_vol.basculer_mode()
-	assert_eq(_vol.chauve_souris.mode, ChauveSouris.Mode.VOL_LIBRE)
-	var depart := _vol.chauve_souris.position.y
-	_toucher(Vector2(500, 500), true)
-	_glisser(Vector2(500, 580), Vector2(0, 80))
-	_glisser(Vector2(500, 620), Vector2(0, 40))
-	_toucher(Vector2(500, 620), false)
-	assert_almost_eq(_vol.chauve_souris.position.y, depart + 120.0, 1e-6)
-	assert_eq(_vol.echos, 0)
-
-
 func test_la_grotte_avance_avec_la_chauve_souris() -> void:
 	await wait_seconds(0.5)
 	assert_gt(_vol.chauve_souris.position.x, 0.0)

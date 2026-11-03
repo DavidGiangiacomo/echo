@@ -1,8 +1,8 @@
 class_name ChauveSouris
 extends Area2D
 ## La chauve-souris (issue #8). Elle avance seule vers la droite ; le joueur
-## la fait changer de couloir en glissant le doigt, ou la guide du doigt en
-## vol libre (les deux modes sont à comparer pour l'issue #6).
+## la fait changer de couloir en glissant le doigt. Les couloirs ont été
+## préférés au vol libre, où le doigt la guidait (issue #6).
 ##
 ## Une collision l'étourdit une seconde : elle continue de voler mais ne peut
 ## plus rien faire, et ne touche ni n'attrape plus rien pendant ce temps.
@@ -12,15 +12,9 @@ extends Area2D
 signal heurte(obstacle: Obstacle)
 signal attrape(insecte: Insecte)
 
-enum Mode { COULOIRS, VOL_LIBRE }
-
 const COULEUR := Color(0.92, 0.94, 1.0)
 const COULEUR_ETOURDIE := Color(0.5, 0.5, 0.56)
-## Limites du vol libre : entre le plafond et le sol.
-const HAUT := -380.0
-const BAS := 380.0
 
-var mode := Mode.COULOIRS
 ## Le couloir visé : 0 plafond, 1 milieu, 2 sol.
 var couloir := 1
 var vitesse_px_s := 600.0
@@ -63,32 +57,13 @@ func changer_couloir(sens: int) -> void:
 	aller_au_couloir(couloir + sens)
 
 
-## Rejoint le couloir demandé (mode couloirs seulement).
+## Rejoint le couloir demandé.
 func aller_au_couloir(nouveau: int) -> void:
-	if mode != Mode.COULOIRS or est_etourdie():
+	if est_etourdie():
 		return
 	nouveau = clampi(nouveau, 0, Echelle.COULOIRS.size() - 1)
 	if nouveau != couloir:
 		_rejoindre(nouveau)
-
-
-## Vol libre : suit le doigt, qui vient de bouger de `dy` pixels.
-func deplacer(dy: float) -> void:
-	if mode != Mode.VOL_LIBRE or est_etourdie():
-		return
-	position.y = clampf(position.y + dy, HAUT, BAS)
-
-
-## Passe en mode couloirs ou en vol libre. En repassant aux couloirs, elle
-## rejoint le plus proche.
-func changer_mode(nouveau: Mode) -> void:
-	mode = nouveau
-	if mode == Mode.COULOIRS:
-		var plus_proche := 0
-		for i in Echelle.COULOIRS.size():
-			if absf(Echelle.hauteur_couloir(i) - position.y) < absf(Echelle.hauteur_couloir(plus_proche) - position.y):
-				plus_proche = i
-		_rejoindre(plus_proche)
 
 
 ## Glisse jusqu'au couloir `nouveau`. Un Tween fait varier une propriété en

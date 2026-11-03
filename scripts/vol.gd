@@ -10,7 +10,6 @@ extends Node2D
 signal insectes_changes(total: float)
 signal audace_changee(valeur: float)
 signal choeur
-signal mode_change(mode: ChauveSouris.Mode)
 
 ## Part de la largeur de l'écran laissée derrière la chauve-souris.
 const PART_DERRIERE := 0.15
@@ -60,8 +59,8 @@ func _process(delta: float) -> void:
 	audace_changee.emit(audace.valeur())
 
 
-## Les gestes du joueur, que l'interface n'a pas déjà pris (le bouton du
-## mode, par exemple). Un seul doigt compte : celui qui s'est posé en premier.
+## Les gestes du joueur, que l'interface n'a pas déjà pris. Un seul doigt
+## compte : celui qui s'est posé en premier.
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch and event.index == 0:
 		if event.pressed:
@@ -70,10 +69,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			lancer_echo()
 	elif event is InputEventScreenDrag and event.index == 0:
 		var geste := _gestes.glisser(event.position)
-		if chauve_souris.mode == ChauveSouris.Mode.VOL_LIBRE:
-			if _gestes.doigt_en_mouvement():
-				chauve_souris.deplacer(event.relative.y)
-		elif geste == LecteurGestes.Geste.GLISSER_HAUT:
+		if geste == LecteurGestes.Geste.GLISSER_HAUT:
 			chauve_souris.changer_couloir(-1)
 		elif geste == LecteurGestes.Geste.GLISSER_BAS:
 			chauve_souris.changer_couloir(1)
@@ -91,15 +87,6 @@ func lancer_echo() -> void:
 	audace.echo()
 	echos += 1
 	audace_changee.emit(audace.valeur())
-
-
-## Bascule entre couloirs et vol libre (issue #6).
-func basculer_mode() -> void:
-	var nouveau := ChauveSouris.Mode.COULOIRS
-	if chauve_souris.mode == ChauveSouris.Mode.COULOIRS:
-		nouveau = ChauveSouris.Mode.VOL_LIBRE
-	chauve_souris.changer_mode(nouveau)
-	mode_change.emit(nouveau)
 
 
 ## La caméra suit la chauve-souris ; la grotte se construit devant elle, au

@@ -61,9 +61,3 @@ func relacher(position: Vector2) -> Geste:
 	if _glissement_reconnu or _a_bouge or position.distance_to(_depart) > TOLERANCE_TOUCHER:
 		return Geste.AUCUN
 	return Geste.TOUCHER
-
-
-## Vrai si le doigt posé a déjà bougé : en vol libre, il guide alors la
-## chauve-souris.
-func doigt_en_mouvement() -> bool:
-	return _appuye and _a_bouge

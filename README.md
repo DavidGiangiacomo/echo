@@ -42,12 +42,11 @@ Contrôles (sur ordinateur, la souris joue le rôle du doigt) :
 |---|---|
 | toucher l'écran | envoyer un écho |
 | glisser vers le haut ou le bas | changer de couloir (plafond, milieu, sol) |
-| bouton en haut à droite | basculer entre **Couloirs** et **Vol libre** (le doigt guide la chauve-souris) |
 
 Sur téléphone, l'écran reste en paysage, dans un sens ou dans l'autre selon
-la façon dont on tient l'appareil : en portrait, on ne voit pas assez loin
-devant (issue #6). Le bouton sert à comparer les deux façons de piloter,
-l'autre question de l'issue #6.
+la façon dont on tient l'appareil. Paysage et couloirs ont été choisis sur
+téléphone (issue #6) : en portrait, on ne voit pas assez loin devant, et les
+couloirs ont été préférés au vol libre, où le doigt guidait la chauve-souris.
 
 Pour regarder le prototype jouer tout seul, avec un écho toutes les 2,5 s :
 
