@@ -1,0 +1,66 @@
+{
+  "vol": {
+    "vitesse_m_s": 20,
+    "couloirs": 3,
+    "etourdissement_s": 1
+  },
+  "audace": {
+    "echelle_m": 50,
+    "division_par_echo": 2,
+    "division_bonus_seul": false
+  },
+  "echo": {
+    "portee_m": 60,
+    "vitesse_onde_m_s": 120,
+    "revelation_s": 1.5
+  },
+  "marquage": {
+    "duree_s": 4,
+    "multiplicateur": 3,
+    "choeur_minimum_insectes": 5,
+    "choeur_multiplicateur": 6
+  },
+  "insectes": {
+    "secondes_de_colonie": 1.5
+  },
+  "grottes": [
+    {
+      "id": "calcaire",
+      "nom": "Grotte calcaire",
+      "deblocage_saison": 1,
+      "valeur_insecte": 1,
+      "obstacles": { "espacement_min_m": 20, "espacement_max_m": 46 },
+      "insectes": { "espacement_min_m": 20, "espacement_max_m": 60 },
+      "essaims": {
+        "espacement_min_m": 2400,
+        "espacement_max_m": 3200,
+        "taille_min": 5,
+        "taille_max": 8,
+        "longueur_m": 24
+      }
+    }
+  ],
+  "especes": {
+    "doublement_tous_les": 25,
+    "liste": [
+      { "id": "pipistrelle", "nom": "Pipistrelle commune", "cout_initial": 15, "raison_cout": 1.15, "production_par_seconde": 0.025 },
+      { "id": "daubenton", "nom": "Murin de Daubenton", "cout_initial": 100, "raison_cout": 1.13, "production_par_seconde": 0.25, "bonus_riviere": 2 },
+      { "id": "oreillard", "nom": "Oreillard", "cout_initial": 1100, "raison_cout": 1.11, "production_par_seconde": 2, "portee_echo_pourcent_par_individu": 1, "portee_echo_plafond_pourcent": 50 },
+      { "id": "rhinolophe", "nom": "Grand rhinolophe", "cout_initial": 12000, "raison_cout": 1.09, "production_par_seconde": 12, "marquage_s_par_individu": 0.1, "marquage_plafond_s": 3 }
+    ]
+  },
+  "sens": [
+    { "id": "oreilles", "nom": "Oreilles", "cout_initial": 50, "raison_cout": 1.6, "effet": "portee_echo_pourcent", "valeur_par_niveau": 10 },
+    { "id": "memoire", "nom": "Mémoire", "cout_initial": 50, "raison_cout": 1.6, "effet": "revelation_s", "valeur_par_niveau": 0.2 },
+    { "id": "instinct", "nom": "Instinct", "cout_initial": 30, "raison_cout": 1.5, "effet": "esquive_automatique_pourcent", "valeur_par_niveau": 3, "base_pourcent": 20, "plafond_pourcent": 85 }
+  ],
+  "harmoniques": {
+    "diviseur_insectes": 100000,
+    "exposant": 0.45,
+    "bonus_production_pourcent": 14,
+    "bonus_premiere_harmonique_pourcent": 0
+  },
+  "hors_ligne": {
+    "plafond_h": 10
+  }
+}

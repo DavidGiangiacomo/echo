@@ -1,0 +1,68 @@
+# Lance les tests du simulateur d'économie sur GitHub Actions :
+# à chaque pull request, à chaque push sur main, et à la demande depuis
+# l'onglet Actions (bouton « Run workflow »). Lance ensuite les trois scripts
+# du simulateur en version courte, pour vérifier qu'ils tournent sans erreur.
+#
+# Tout tourne avec deux versions de Python : la plus ancienne que le README
+# annonce (3.8) et la plus récente (« 3.x »). Rien à installer : le
+# simulateur n'utilise aucune bibliothèque.
+
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Le workflow ne fait que lire le dépôt.
+permissions:
+  contents: read
+
+jobs:
+  simulateur:
+    name: Simulateur (Python ${{ matrix.python-version }})
+    # Ubuntu 24.04 plutôt que ubuntu-latest : Python 3.8 n'est plus publié
+    # pour les versions d'Ubuntu plus récentes.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      # Si une version de Python échoue, on veut quand même le résultat de
+      # l'autre.
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.x"]
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v7
+
+      - name: Installer Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Lancer les tests
+        run: python -m unittest discover -s simulateur -v
+
+      # Les étapes suivantes lancent les scripts en version courte (une
+      # graine, des vols d'une minute). Elles vérifient seulement que les
+      # scripts tournent sans erreur : elles ne jugent pas les cibles du GDD,
+      # et un script qui affiche « NON respecté » réussit quand même.
+
+      # Les trois profils : le résumé de l'idle pur (sans écho ni Chœur)
+      # n'emprunte pas le même chemin que celui des autres.
+      - name: Simuler une saison par profil
+        run: |
+          for profil in attentif moyen idle; do
+            python simulateur/simulateur.py --profil "$profil" --duree 5
+          done
+
+      - name: Étudier le rythme d'écho (issue 2)
+        run: python simulateur/rythme_echo.py --graines 1 --duree 1 --sens
+
+      # La politique « givre » allonge les saisons au-delà de la durée
+      # maximale : on vérifie aussi l'affichage d'une série interrompue.
+      - name: Vérifier le rythme visé (issue 3)
+        run: |
+          python simulateur/verifier_rythme.py --graines 1
+          python simulateur/verifier_rythme.py --graines 1 --politique givre
